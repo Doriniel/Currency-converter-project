@@ -6,7 +6,7 @@
 }
 
 .header {
-    width: 100%;
+    width: 1440px;
     height: 50px;
     background-color: white;
     display: flex;
@@ -15,31 +15,46 @@
 
 h1 {
     font-size: 36px;
-    font-weight: bold;
     line-height: 42px;
     font-weight: 700;
-    margin-left: 253px;
-    margin-right:258px;
+    margin-left: 300px;
+    /* margin-right:258px; */
 }
 
 .calculator {
-    width: 100%;
+    width: 1440px;
     margin: 35px auto 45px;
 }
 
 .calc-box {
-    margin-left: 253px;
-    margin-right:258px;
+    margin-left: 300px;
+    /* margin-right:316px; */
+    width: 808px;
     display: flex; 
     justify-content: space-between;
     vertical-align: baseline;
-    border: 1px solid lightgray;
+    /* border: 1px solid lightgray; */
 }
 
 .calc-item {
-    width: 405px;
+    width: 360px;
     display: inline-block;
     vertical-align: top;
+}
+
+.calc-arrow {
+    padding-top: 150px;
+}
+
+.button-calc-arrow {
+    display: block;
+    width: 40px;
+    height: 70px;
+    background-image: url(./img/arrow_transfer.svg);
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    margin: 0 auto;
 }
 
 .calc-title{
@@ -48,7 +63,11 @@ h1 {
 }
 
 .calc-currency {
-    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #E5E5E5;
+    color: #C6C6C6;
+    border-radius: 3px;
 }
 
 .calc-currency-item {
@@ -58,6 +77,20 @@ h1 {
     padding: 12px;
     text-align: center;
     cursor: pointer;
+    border: 1px solid #E5E5E5;
+    color: #C6C6C6;
+    background-color: white;
+}
+
+.calc-currency-select {
+    width: 85px;
+    height: 40px;
+    border: 1px soild lightgrey;
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #E5E5E5;
+    color: #C6C6C6;
+    background-color: white;
 }
 
 .calc-input {
@@ -68,10 +101,9 @@ h1 {
 
 .calc-input-field {
     margin-bottom: 30px;
-    font-size: 36px;
+    font-size: 38px;
     font-weight: 700;
     line-height: 42px;
     width: 100%;
     border: none;
-
 }
