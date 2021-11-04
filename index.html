@@ -19,35 +19,35 @@
         <div class="calculator">
             <h1>Конвертер валют онлайн</h1>
             <div class="calc-box">
-                <div class="calc-item">
+                <div class="calc-item from">
                     <div class="calc-title">У меня есть</div>
-                    <div class="calc-currency from">
-                        <button class="calc-currency-item active" type="button">RUR</button>
-                        <button class="calc-currency-item" type="button">USD</button>
-                        <button class="calc-currency-item" type="button">EUR</button>
-                        <button class="calc-currency-item" type="button">GBP</button>
+                    <div class="calc-currency">
+                        <button class="calc-currency-item" type="button" value="RUB">RUB</button>
+                        <button class="calc-currency-item" type="button" value="USD">USD</button>
+                        <button class="calc-currency-item" type="button" value="EUR">EUR</button>
+                        <button class="calc-currency-item" type="button" value="GBP">GBP</button>
                         <select class="calc-currency-select">галочка</select>
                     </div>
                     <div class="calc-input">
                         <input class="calc-input-field" type="number" maxlength="10" value="1" data.reverse="false">
-                        <div class="calc-input-rate">1 RUB = 0.0135 USD</div>
+                        <div class="calc-input-rate">1 RUB = пример USD</div>
                     </div>
                 </div>
                 <div class="calc-arrow">
                     <button type="button" class="button-calc-arrow"></button>
                 </div>
-                <div class="calc-item">
+                <div class="calc-item to">
                     <div class="calc-title">Хочу приобрести</div>
-                    <div class="calc-currency to">
-                        <button class="calc-currency-item" type="button">RUR</button>
-                        <button class="calc-currency-item active" type="button">USD</button>
-                        <button class="calc-currency-item" type="button">EUR</button>
-                        <button class="calc-currency-item" type="button">GBP</button>
+                    <div class="calc-currency">
+                        <button class="calc-currency-item" type="button" value="RUB">RUB</button>
+                        <button class="calc-currency-item" type="button" value="USD">USD</button>
+                        <button class="calc-currency-item" type="button" value="EUR">EUR</button>
+                        <button class="calc-currency-item" type="button" value="GBP">GBP</button>
                         <select class="calc-currency-select">галочка</select>
                     </div>
                     <div class="calc-input">
-                        <input class="calc-input-field" type="number" maxlength="10" data.reverse="true">
-                        <div class="calc-input-rate">1 USD = 73.8896 RUB</div>
+                        <input class="calc-input-field" type="number" maxlength="10" data.reverse="true" id="right">
+                        <div class="calc-input-rate">1 USD = пример RUB</div>
                     </div>
                 </div>
             </div>
