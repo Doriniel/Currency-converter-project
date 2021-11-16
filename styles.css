@@ -5,13 +5,74 @@
     font-family: Roboto, Arial, Helvetica, sans-serif;
 }
 
+/* header start */
+
 .header {
     width: 1440px;
     height: 50px;
-    background-color: white;
+    background-color: #F5F5F6;
     display: flex;
     justify-content: space-around;
 }
+
+.container {
+    max-width: 952px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.header.container {
+    display: flex;
+    align-items: center;
+    padding-top: 9px;
+    padding-bottom: 9px;
+}
+
+.header__logo {
+    margin-right: 64px;
+}
+
+/* .list-reset {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+} */
+
+.menu_list {
+    display: flex;
+    gap: 25px;
+    list-style-type: none;
+}
+
+.menu_link {
+    font-size: 11px;
+    text-decoration: none;
+    color: #959BA4;
+    font-weight: 500;
+}
+
+.header_button {
+    width: 50px;
+    height: 27px;
+    font-size: 11px;
+    font-weight: 500;
+    text-align: center;
+    line-height: 27px;
+    border: none;
+    margin-left: auto;
+    border-radius: 3px;
+    background-color: white;
+    color: black;
+}
+
+.header_button:hover {
+    color: white;
+    background-color: #833AE0;
+}
+
+
+/* header end */
+
 
 h1 {
     font-size: 36px;
@@ -58,8 +119,10 @@ h1 {
 }
 
 .calc-title{
-    font-size: 16px;
+    font-size: 14px;
     margin: 10px 0px;
+    color: #9F9F9F;
+    font-weight: 400;
 }
 
 .calc-currency {
@@ -114,5 +177,9 @@ h1 {
     border: none;
 }
 
-
+.calc-input-rate {
+    color: #C6C6C6;
+    font-size: 12px;
+    font-weight: 400;
+}
 

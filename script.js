@@ -1,7 +1,4 @@
-
-// https://api.exchangerate.host/latest?base=USD&symbols=RUB 
-
-
+// Находим все нужные элементы и контролы:
 const fromPanel = document.querySelector('.from');
 const toPanel = document.querySelector('.to');
 
@@ -14,9 +11,14 @@ const toButtonList = toPanel.querySelector('.calc-currency');
 const fromRate = fromPanel.querySelector('.calc-input-rate');
 const toRate = toPanel.querySelector('.calc-input-rate');
 
-const state = {from: 'RUB', to:'USD', amount:1}
+const fromSelector = fromPanel.querySelector('select.calc-currency-item');
+const toSelector = toPanel.querySelector('select.calc-currency-item');
+
+const state = { from: 'RUB', to: 'USD', amount: 1 }
 
 initialApp();
+
+// Получаем данные с сервера с параметрами запроса сразу с суммой к конвертации:
 
 async function convert(from, to, amount) {
     const response = await fetch(`https://api.exchangerate.host/convert?from=${from}&to=${to}&amount=${amount}&places=4`);
@@ -24,204 +26,160 @@ async function convert(from, to, amount) {
     return [data.result, data.info.rate];
 }
 
-function activateButton (button) {
+function activateButton(button) {
     button.classList.add('active');
 }
 
-function disableButton (button) {
+function disableButton(button) {
     button.classList.remove('active');
 }
 
-function getActiveButton (buttonList) {
+function getActiveButton(buttonList) {
     return buttonList.querySelector('.active');
 }
 
-function getButtonByCurrency (currency, buttonList) {
+function getButtonByCurrency(currency, buttonList) {
     return buttonList.querySelector(`.calc-currency-item[value=${currency}]`);
 }
 
-function initialApp () {
+function initialApp() {
     activateButton(getButtonByCurrency(state.from, fromButtonList));
-
     activateButton(getButtonByCurrency(state.to, toButtonList));
 }
 
 // const [result, rate] = convert();
 
+// Обработчики событий на инпуты, кнопки выбора валюты и селекты:
+
 fromInput.addEventListener('input', async (event) => {
     let rate;
-    [toInput.value, rate] = await convert('RUB', 'USD', event.target.value);
+    let currencyFrom = fromButtonList.querySelector('.active').value;
+    let currencyTo = toButtonList.querySelector('.active').value;
+    [toInput.value, rate] = await convert(currencyFrom, currencyTo, event.target.value);
+
+    fromRate.innerText = (currencyFrom === currencyTo) ? `1 ${currencyFrom} = 1 ${currencyTo.toFixed(0)}`:  `1 ${currencyFrom} = ${rate} ${currencyTo}`; 
+    toRate.innerText = (currencyFrom === currencyTo) ? `1 ${currencyFrom} = 1 ${currencyTo.toFixed(0)}` : `1 ${currencyTo} = ${(1/ rate).toFixed(4)} ${currencyFrom}`;
+
+    // console.log(`toInput value:  ${toInput.value}, rate: ${rate}, event.target.value: ${event.target.value}, currencyFrom: ${currencyFrom}, currencyTo: ${currencyTo}`);
 })
 
+
 toInput.addEventListener('input', async (event) => {
-    [fromInput.value] = await convert('USD', 'RUB', event.target.value);
+    // let rate;
+    let currencyFrom = fromButtonList.querySelector('.active').value;
+    let currencyTo = toButtonList.querySelector('.active').value;
+    [fromInput.value, rate] = await convert(currencyTo, currencyFrom, event.target.value);
+
+    fromRate.innerText = (currencyFrom === currencyTo) ? `1 ${currencyFrom} = 1 ${currencyTo.toFixed(0)}`:  `1 ${currencyFrom} = ${rate} ${currencyTo}`; 
+    toRate.innerText = (currencyFrom === currencyTo) ? `1 ${currencyFrom} = 1 ${currencyTo.toFixed(0)}` : `1 ${currencyTo} = ${(1/ rate).toFixed(4)} ${currencyFrom}`;
+
+    // console.log("fromInput value: ", fromInput.value, "rate: ---- test", "event.target.value: ", event.target.value, "currencyFrom: ", currencyFrom, "currencyTo: ", currencyTo)
 })
+
+// События, которые выделяют кнопки "активными" при нажатии:
 
 fromButtonList.addEventListener('click', (event) => {
     if (event.target.classList.contains('calc-currency-item')) {
         disableButton(getActiveButton(fromButtonList));
         activateButton(event.target);
     }
+
+})
+
+toButtonList.addEventListener('click', (event) => {
+    if (event.target.classList.contains('calc-currency-item')) {
+        disableButton(getActiveButton(toButtonList));
+        activateButton(event.target);
+    }
+})
+
+// Проверяем, является ли выделенный контрол кнопкой или селектом - и в зависимости от этого считаем:
+
+fromButtonList.addEventListener("click", async (event) => {
+    if (event.target.tagName === "BUTTON") {
+        let rate;
+        let currencyFrom = event.target.value;
+        let currencyTo = toButtonList.querySelector('.active').value;
+        [toInput.value, rate] = await convert(currencyFrom, currencyTo, fromInput.value);
+
+        fromRate.innerText = (currencyFrom === currencyTo) ? `1 ${currencyFrom} = 1 ${currencyTo}`:  `1 ${currencyFrom} = ${rate} ${currencyTo}`; 
+        toRate.innerText = (currencyFrom === currencyTo) ? `1 ${currencyFrom} = 1 ${currencyTo}` : `1 ${currencyTo} = ${(1/ rate).toFixed(4)} ${currencyFrom}`;
+
+        // console.log(`fromButtonList:  toInput value:  ${toInput.value}, rate: ${rate}, event.target.value: ${event.target.value}, currencyFrom: ${currencyFrom}, currencyTo: ${currencyTo}`);
+    }
+    
+});
+
+fromSelector.addEventListener("change", async (event) => {
+    if (event.target.tagName === "SELECT") {
+        let rate;
+        let currencyFrom = event.target.value;
+        let currencyTo = toButtonList.querySelector('.active').value;
+
+        [toInput.value, rate] = await convert(currencyFrom, currencyTo, fromInput.value);
+        fromRate.innerText = (currencyFrom === currencyTo) ? `1 ${currencyFrom} = 1 ${currencyTo}`:  `1 ${currencyFrom} = ${rate} ${currencyTo}`; 
+        toRate.innerText = (currencyFrom === currencyTo) ? `1 ${currencyFrom} = 1 ${currencyTo}` : `1 ${currencyTo} = ${(1/ rate).toFixed(4)} ${currencyFrom}`;
+
+        // console.log(`fromSelect:   toInput value:  ${toInput.value}, rate: ${rate}, event.target.value: ${event.target.value}, currencyFrom: ${currencyFrom}, currencyTo: ${currencyTo}`);
+    }
+    
 })
 
 
 
+toButtonList.addEventListener("click", async (event) => {
+
+    if (event.target.tagName === "BUTTON") {
+        let currencyFrom = event.target.value;
+        let currencyTo = fromButtonList.querySelector('.active').value;
+        [toInput.value, rate] = await convert(currencyTo, currencyFrom, fromInput.value);
+
+        fromRate.innerText = (currencyFrom === currencyTo) ? `1 ${currencyFrom} = 1 ${currencyTo}`:  `1 ${currencyFrom} = ${rate} ${currencyTo}`; 
+        toRate.innerText = (currencyFrom === currencyTo) ? `1 ${currencyFrom} = 1 ${currencyTo}` : `1 ${currencyTo} = ${(1/ rate).toFixed(4)} ${currencyFrom}`;
+
+        // console.log(`toButtonList: "fromRate.innerText "${fromRate.innerText} toInput value:  ${toInput.value}, rate: , event.target.value: ${event.target.value}, currencyFrom: ${currencyFrom}, currencyTo: ${currencyTo}`);
+    }
+});
+
+
+toSelector.addEventListener("change", async (event) => {
+    if (event.target.tagName === "SELECT") {
+        let currencyFrom = event.target.value;
+        let currencyTo = fromButtonList.querySelector('.active').value;
+
+        [toInput.value, rate] = await convert(currencyTo, currencyFrom, fromInput.value);
+
+        fromRate.innerText = (currencyFrom === currencyTo) ? `1 ${currencyFrom} = 1 ${currencyTo}`:  `1 ${currencyFrom} = ${rate} ${currencyTo}`; 
+        toRate.innerText = (currencyFrom === currencyTo) ? `1 ${currencyFrom} = 1 ${currencyTo}` : `1 ${currencyTo} = ${(1/ rate).toFixed(4)} ${currencyFrom}`;
+
+        // console.log(`toSelect:   toInput value:  ${toInput.value}, event.target.value: ${event.target.value}, currencyFrom: ${currencyFrom}, currencyTo: ${currencyTo}`);
+    }
+});
 
 
 
-let selector = document.querySelectorAll('.calc-currency-select');
-// let button = document.querySelectorAll('.calc-currency-item');
+// Запрос на получение всех вариантов валют с сервера:
+async function getCurrency() {
+    const resp = await fetch("https://api.exchangerate.host/latest")
+    const data = await resp.json()
+    return data;
+}
 
-// button.forEach(item => {
-//     item.addEventListener('click', markActiveButton);
-// })
+//Получаем данные с сервера
+getCurrency()
+    .then((data) => {
+        const currencyArr = Object.keys(data.rates);
+        renderSelect(currencyArr, fromSelector);
+        renderSelect(currencyArr, toSelector);
+    })
 
+// Отрисовываем селекторы по данным с сервера: *https://learn.javascript.ru/form-elements#new-option
 
-// Получить rates от доллара к рублю через API: (сначала сделать для пар, которые уже есть в html-ке? потом для тех, которые в Селекте?):
-// https://api.exchangerate.host/latest?base=USD&symbols=RUB&amount=${amount}; 
-// https://api.exchangerate.host/latest?base=${currencyFrom}&symbols=${currencyTo}&amount=${amount}; 
-
-let boxFrom;
-let boxTo;
-let currencyFrom;
-let currencyTo;
-let amount;
-let resultValue; // правый инпут с результатом.
-
-// boxFrom = document.querySelector('.from');
-// currencyFromBtn = boxFrom.querySelectorAll('.calc-currency-item');
-// boxTo = document.querySelector('.to');
-// currencyToBtn = boxTo.querySelectorAll('.calc-currency-item');
-// amountField = document.querySelector('.calc-input-field');
-
-// currencyFromBtn.forEach(item => {
-//     item.addEventListener('click', (event) => {
-//         currencyFrom = `${event.target.innerText}`;
-//         console.log(currencyFrom);
-//     })
-
-//     item.addEventListener('click', (event) => {
-//         if (event.target.tagName === "BUTTON") {
-//             item.classList.toggle('active');
-//         }
-//     })
-// })
-
-
-// currencyToBtn.forEach(item => {
-//     item.addEventListener('click', (event) => {
-//         currencyTo = `${event.target.innerText}`;
-//         console.log(currencyTo);
-//     })
-
-//     item.addEventListener('click', (event) => {
-//         if (event.target.tagName === "BUTTON") {
-//             item.classList.toggle('active');
-//         }
-//     })
-// })
-
-// amountField.addEventListener('change', (event) => {
-//     amount = `${event.target.value}`;
-//     console.log(amount);
-// })
-
-
-
-// function getConverted(currencyFrom, currencyTo, amount) {
-//     fetch(`https://api.exchangerate.host/latest?base=${currencyFrom}&symbols=${currencyTo}&amount=${amount}`)
-//         .then(response => response.json())
-//         .then(data => {
-//             // console.log(data.rates);
-//                 displayRes(data);
-//         })
-// }
-
-// function displayRes(data) {
-//     resultValue = document.getElementById('right');
-
-//     for (let key in data.rates) {
-//         resultValue.value = data.rates[key];
-//     }
-  
-// }
-
-// getConverted('USD', 'RUB', 2000);
-
-// function getConverted(currencyFrom, currencyTo, amount) {
-//     return new Promise((resolve, reject) => {
-//         fetch(`https://api.exchangerate.host/latest?base=${currencyFrom}&symbols=${currencyTo}&amount=${amount}`)
-//             .then(response => response.json())
-//             .then(data => {
-//                 console.log(data.rates);
-//                 resolve(data);
-//             })
-//             .catch(error => {
-//                 reject(error);
-//             })
-//     })
-// }
-
-
-
-
-// console.log(data.rates);
-
-// const getConverted = async (currencyFrom, currencyTo, amount) => {
-//     const response = await fetch(`https://api.exchangerate.host/latest?base=${currencyFrom}&symbols=${currencyTo}&amount=${amount}`);
-//     const data = await response.json();
-//     return data
-// }
-
-// ____________________________________________________________________________________________//
-
-
-// Добавляем обоим селекторам обработчики событий по типу change (т.е. на изменение элемента?):
-// selector.forEach((item) => {
-//     item.addEventListener('change', selectorHandler);
-// })
-
-// function selectorHandler(event) {
-//     if (event.target.value) {
-//         let selected = document.querySelector('option');
-//         selected.classList.toggle('active');
-//         // this.classList.toggle('active');
-//     }
-//     // selector.options[selector.selectedIndex].value); - так не работает.
-// };
-
-// // 
-
-// getCurrency();
-// let currencyArr = [];
-// function getCurrency() {
-//     fetch('https://api.exchangerate.host/latest')
-//         .then(response => response.json())
-//         .then(data => {
-//             currencyArr = Object.keys(data.rates);
-//             currencyArr.forEach(item => {
-//                 renderSelect(item);
-//             })
-//         })
-// }
-
-// // Отрисовка опций внутри селекторов:
-
-// function renderSelect(item) {
-//     let selectors = document.querySelectorAll('.calc-currency-select');
-//     selectors.forEach((elem) => {
-//         let option = new Option(`${item}`, `${item}`);
-//         elem.append(option);
-//         // let currOption = document.createElement('option');
-//         // currOption.innerText = `${item}`;
-//         // elem.append(currOption);
-//     })
-
-// }
-
-
-
-
-
+function renderSelect(arr, whereToAppend) {
+    arr.forEach(element => {
+        let option = new Option(`${element}`, `${element}`);
+        whereToAppend.append(option);
+    });
+}
 
 
