@@ -12,9 +12,37 @@
 <body>
     <div class="window">
         <div class="header">
-            <div class="header-logo">Логотип</div>
-            <div class="header-menu">Менюшка</div>
-            <div class="header-signin">Войти</div>
+            <div class="header container">
+                <div class="header__logo">
+                    <img src="./img/logo.png" alt="logo">
+                </div>
+                <div class="menu">
+                    <ul class="menu_list">
+                        <li class="menu_item">
+                            <a href="" class="menu_link" style="color: black;">БАНК</a>
+                        </li>
+                        <li class="menu_item">
+                            <a href="" class="menu_link">БИЗНЕС</a>
+                        </li>
+                        <li class="menu_item">
+                            <a href="" class="menu_link">ИНВЕСТИЦИИ</a>
+                        </li>
+                        <li class="menu_item">
+                            <a href="" class="menu_link">СТРАХОВАНИЕ</a>
+                        </li>
+                        <li class="menu_item">
+                            <a href="" class="menu_link">МОБАЙЛ</a>
+                        </li>
+                        <li class="menu_item">
+                            <a href="" class="menu_link">ПУТЕШЕСТВИЯ</a>
+                        </li>
+                        <li class="menu_item">
+                            <a href="" class="menu_link">РАЗВЛЕЧЕНИЯ</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="header_button">ВОЙТИ</div>
+            </div>
         </div>
         <div class="calculator">
             <h1>Конвертер валют онлайн</h1>
@@ -29,7 +57,7 @@
                         <select class="calc-currency-select">галочка</select>
                     </div>
                     <div class="calc-input">
-                        <input class="calc-input-field" type="number" maxlength="10" value="1" data.reverse="false">
+                        <input class="calc-input-field" type="number" min="1" maxlength="10" value="1" data.reverse="false">
                         <div class="calc-input-rate">1 RUB = пример USD</div>
                     </div>
                 </div>
@@ -46,7 +74,7 @@
                         <select class="calc-currency-select">галочка</select>
                     </div>
                     <div class="calc-input">
-                        <input class="calc-input-field" type="number" maxlength="10" data.reverse="true" id="right">
+                        <input class="calc-input-field" type="number" min="1" maxlength="10" data.reverse="true" id="right">
                         <div class="calc-input-rate">1 USD = пример RUB</div>
                     </div>
                 </div>
