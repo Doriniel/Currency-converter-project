@@ -1,2 +1,4 @@
-# M3-project-currency-converter
-Algoritmika coding bootcamp. M3 project. Currency converter.
+# Online currency converter
+
+- Project to train asynchronous JavaScript concepts.
+- Check it out here: https://doriniel.github.io/Currency-converter-project/
